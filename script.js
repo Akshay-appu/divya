@@ -1,286 +1,406 @@
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
+MR = {};
+MR.Characters = {};
+MR.Characters.Functions = {};
+MR.Characters.SelectedChar = null;
+MR.Characters.CurrentPage = "firstname";
+MR.Characters.SelectedPage = 1;
+MR.Characters.Pages = {
+    [1]: {
+        ['name']: 'firstname',
+        ['label']: 'FIRSTNAME',
+    },
+    [2]: {
+        ['name']: 'lastname',
+        ['label']: 'LASTNAME',
+    },
+    [3]: {
+        ['name']: 'nationality',
+        ['label']: 'NATIONALITY',
+    },
+    [4]: {
+        ['name']: 'birthdate',
+        ['label']: 'BIRTHDATE',
+    },
+    [5]: {
+        ['name']: 'gender',
+        ['label']: 'GENDER',
+    },
+};
 
-        const targetId = this.getAttribute('href').substring(1);
-        const targetElement = document.getElementById(targetId);
+$(document).on('click', '.disconnect-button', function(e) {    
+    e.preventDefault();
+    $('.characters-list').css("filter", "blur(4px)");
+    $('.disconnect-confirmation').fadeIn(150);
+});
 
-        if (targetElement) {
-            // Scroll slowly to the target section
-            targetElement.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start',
-                inline: 'nearest',
-                duration: 10000000 // Adjust the duration (in milliseconds)
-            });
+$(document).on('click', '#disconnect-accept', function(e) {    
+    e.preventDefault();
+    $('.characters-list').css("filter", "none");
+    $.post(`https://${GetParentResourceName()}/CloseUI`);
+    $.post(`https://${GetParentResourceName()}/DisconnectButton`);
+});
+
+$(document).on('click', '#disconnect-cancel', function(e) {    
+    e.preventDefault();
+    $('.characters-list').css("filter", "none");
+    $('.disconnect-confirmation').fadeOut(150);
+});
+
+$(document).on('click', '.delete-button', function(e) {    
+    e.preventDefault();
+    if (MR.Characters.SelectedChar !== null) {
+        let charData = $(MR.Characters.SelectedChar).data('cid');
+        if (charData !== "") {
+            $('.characters-list').css("filter", "blur(4px)");
+            $('.delete-confirmation').fadeIn(150);
+        } else {
+            MR.Characters.Functions.Notify("fas fa-user-friends", "Characters", "No character found on this slot.", "#e74c3c", 500);
         }
-    });
-});
-menu = document.getElementById("menu-icon");
-
-close = document.getElementById("close");
-nav = document.getElementById("nav");
-
-
-menu.addEventListener("click",function(){
-    nav.style.display="block";
-    menu.style.opacity="0";
-    setTimeout(() => {
-        nav.style.transform = "translateX(0%)";
-        nav.style.opacity = "1";
-    }, 0);
-});
-
-close.addEventListener("click",function(){
-    nav.style.transform = "translateX(100%)";
-    nav.style.opacity = "0";
-    
-    setTimeout(() => {
-        nav.style.display="none";
-        
-    }, 500);
-    setTimeout(() => {
-        menu.style.opacity="1";
-        
-    }, 500);
-    
-    
-});
-
-
-top_list = document.querySelectorAll(".top_list");
-
-function main_sliding() {
-    main_text.style.transform="scaleX(1)";
-    function onebyone(n) {
-        i=0;
-        function loop_it(){
-            if (i< n) {
-                top_list[i].style.transform = "translateY(0)";
-                i++;
-    
-                setTimeout(loop_it,200);
-            }
-            
-        }
-        loop_it();
-        
-    }
-    onebyone(top_list.length);
-
-}
-
-
-function checkScreenWidth() {
-    const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-    if (screenWidth >= 800) {
-        nav.style.display = "block";
-        nav.style.opacity = "1";
-        nav.style.transform = "translateX(0%)";
-        
     } else {
-        nav.style.display = "none";
+        MR.Characters.Functions.Notify("fas fa-user-friends", "Characters", "You did not select a Character.", "#e74c3c", 500);
     }
-    if(nav.style.display=="none" && screenWidth<=900){
-        menu.style.display="block";
+})
+
+$(document).on('click', '#delete-accept', function(e) {    
+    e.preventDefault();
+    $.post(`https://${GetParentResourceName()}/RemoveCharacter`, JSON.stringify({
+        citizenid: $(MR.Characters.SelectedChar).data("citizenid"),
+    }));
+    $('.delete-confirmation').fadeOut(150);
+    $('.characters-list').css("filter", "none");
+    MR.Characters.Functions.FadeOutRight('.characters-list', "-40%", 400);
+    setTimeout(function(){
+        MR.Characters.Functions.Refresh();
+    }, 3000);
+});
+
+$(document).on('click', '#delete-cancel', function(e) {    
+    e.preventDefault();
+    $('.characters-list').css("filter", "none");
+    $('.delete-confirmation').fadeOut();
+})
+
+$(document).on('click', '.character-list-header-return', function(e) {    
+    e.preventDefault();
+    MR.Characters.SelectedPage = MR.Characters.SelectedPage - 1
+    if (MR.Characters.CurrentPage === 'firstname') {
+        $('.characters-list').css("filter", "none");
+        MR.Characters.Functions.FadeOutLeft('.character-register-new', '-40%', 400);
+        setTimeout(() => {
+            MR.Characters.Functions.ResetRegister();
+            MR.Characters.Functions.ResetValues();
+            MR.Characters.Functions.EnableCharSelector();
+        }, 500);
+    } else {
+        $("."+MR.Characters.CurrentPage).fadeOut(150);
+        $(".character-register-new-content").fadeOut(150);
+        $(".char-waiting-spinner").fadeIn(150);
+        setTimeout(() => {
+            MR.Characters.CurrentPage = MR.Characters.Pages[MR.Characters.SelectedPage]['name'];
+            $(".character-list-header-select-reg").find('p').html(MR.Characters.Pages[MR.Characters.SelectedPage]['label']);
+            if (MR.Characters.CurrentPage === 'birthdate') {
+                $("#button-icon-reg").html('<i class="fas fa-arrow-circle-right fa-3x"></i>')
+                $("#next-text").html('Next');
+                $("#next-text-description").html('Continue');
+            }
+            $(".char-waiting-spinner").fadeOut(50);
+            $(".character-register-new-content").fadeIn(150);
+            $("."+MR.Characters.CurrentPage).fadeIn(150);
+            $(".character-list-header-reg").addClass('fadeInAnim');
+            $(".character-list-header-select-reg").addClass('fadeInAnim');
+        }, 1000);
     }
-}
-window.addEventListener("load", checkScreenWidth);
-window.addEventListener("resize", checkScreenWidth);
+});
 
-main_text = document.getElementById("main");
+$(document).on('click', '.next-button', function(e) {    
+    e.preventDefault();
+    MR.Characters.SelectedPage = MR.Characters.SelectedPage + 1
+    // End Register
+    if (MR.Characters.CurrentPage === 'gender') {
+        $("."+MR.Characters.CurrentPage).fadeOut(150);
+        $(".character-register-new-content").fadeOut(150);
+        $(".char-waiting-spinner").find('p').html('Creating Character');
+        $(".char-waiting-spinner").fadeIn(150);
+        setTimeout(() => {
+            $(".char-waiting-spinner").fadeOut(50);
+            // Create Char
+            if ( ($('#first_name').val() !== "") && ($('#last_name').val() !== "") && ($('#nationality').val() !== "") && ($('#birthdate').val() !== "") && ($('select[name=gender]').val() !== "" )) {
+                if ( ($('#first_name').val() !== "Firstname") && ($('#last_name').val() !== "Lastname") && ($('#birthdate').val() !== "00-00-0000") ) {
+                  $.post(`https://${GetParentResourceName()}/CreateNewCharacter`, JSON.stringify({
+                      firstname: $('#first_name').val(),
+                      lastname: $('#last_name').val(),
+                      nationality: $('#nationality').val(),
+                      birthdate: $('#birthdate').val(),
+                      gender: $('select[name=gender]').val(),
+                      cid: $(MR.Characters.SelectedChar).attr('id').replace('char-', ''),
+                  }));
+                  $(".container").fadeOut(150);
+                  $('.characters-list').css("filter", "none");
+                  MR.Characters.Functions.FadeOutLeft('.character-register-new', '-40%', 400); 
+                  MR.Characters.Functions.Refresh();
+                  MR.Characters.Functions.ResetRegister();
+              } else {
+                MR.Characters.Functions.Notify("fas fa-user-friends", "Characters", "First name, last name and date of birth are not valid.", "#e74c3c", 500);
+                MR.Characters.Functions.ResetRegister();
+            }
+          } else {
+            MR.Characters.Functions.Notify("fas fa-user-friends", "Characters", "Not all fields are filled in!", "#e74c3c", 500);
+            MR.Characters.Functions.ResetRegister();
+          }
+        }, 2000);
+    } else {
+        $("."+MR.Characters.CurrentPage).fadeOut(150);
+        $(".character-register-new-content").fadeOut(150);
+        $(".char-waiting-spinner").fadeIn(150);
+        setTimeout(() => {
+            MR.Characters.CurrentPage = MR.Characters.Pages[MR.Characters.SelectedPage]['name'];
+            $(".character-list-header-select-reg").find('p').html(MR.Characters.Pages[MR.Characters.SelectedPage]['label']);
+            if (MR.Characters.CurrentPage === 'gender') {
+                $("#button-icon-reg").html('<i class="fas fa-check fa-3x"></i>')
+                $("#next-text").html('Confirm');
+                $("#next-text-description").html('Create character');
+            }
+            $(".char-waiting-spinner").fadeOut(50);
+            $(".character-register-new-content").fadeIn(150);
+            $("."+MR.Characters.CurrentPage).fadeIn(150);
+            $(".character-list-header-reg").addClass('fadeInAnim');
+            $(".character-list-header-select-reg").addClass('fadeInAnim');
+        }, 1000);
+    }
+});
 
+$(document).on('click', '.character', function(e) {    
+    e.preventDefault();
 
-function deactivateAllExcept(elementToKeepActive) {
-    const elements = document.querySelectorAll(".element");
-    elements.forEach(element => {
-        if (element !== elementToKeepActive) {
-            element.classList.remove("active");
+    let cDataPed = $(this).data('cData');
+
+    MR.Characters.Functions.DisableCharSelector();
+
+    if (MR.Characters.SelectedChar === null) {
+        MR.Characters.SelectedChar = $(this);
+
+        if ((MR.Characters.SelectedChar).data('cid') == "") {
+            $(MR.Characters.SelectedChar).addClass("char-selected");
+            
+            // MAKE CHAR TEXT
+            $("#play-text").html("Create");
+            $("#play-text-description").html("Create Identity");
+            $.post(`https://${GetParentResourceName()}/cDataPed`, JSON.stringify({
+                cData: cDataPed
+            }));
+        } else {
+            $(MR.Characters.SelectedChar).addClass("char-selected");
+
+            // CONFIRM CHAR TEXT
+            $("#play-text").html("Confirm");
+            $("#play-text-description").html("Confirm Identity");
+            $.post(`https://${GetParentResourceName()}/cDataPed`, JSON.stringify({
+                cData: cDataPed
+            }));
         }
+
+    } else if ($(MR.Characters.SelectedChar).attr('id') !== $(this).attr('id')) {
+        $(MR.Characters.SelectedChar).removeClass("char-selected");
+        MR.Characters.SelectedChar = $(this);
+        if ((MR.Characters.SelectedChar).data('cid') == "") {
+            $(MR.Characters.SelectedChar).addClass("char-selected");
+
+            // MAKE CHAR TEXT
+            $("#play-text").html("Create");
+            $("#play-text-description").html("Create Identity");
+            $.post(`https://${GetParentResourceName()}/cDataPed`, JSON.stringify({
+                cData: cDataPed
+            }));
+        } else {
+            $(MR.Characters.SelectedChar).addClass("char-selected");
+
+            // CONFIRM CHAR TEXT
+            $("#play-text").html("Confirm");
+            $("#play-text-description").html("Confirm Identity");
+            $.post(`https://${GetParentResourceName()}/cDataPed`, JSON.stringify({
+                cData: cDataPed
+            }));
+        }
+    }
+});
+
+$(document).on('click', '.play-button', function(e) {
+    e.preventDefault();
+    let charData = $(MR.Characters.SelectedChar).data('cid');
+
+    if (MR.Characters.SelectedChar !== null) {
+        if (charData !== "") {
+            $.post(`https://${GetParentResourceName()}/SelectCharacter`, JSON.stringify({
+                cData: $(MR.Characters.SelectedChar).data('cData')
+            }));
+            MR.Characters.Functions.FadeOutRight('.characters-list', "-40%", 400);
+            setTimeout(function(){
+                $(MR.Characters.SelectedChar).removeClass("char-selected");
+                MR.Characters.SelectedChar = null;
+                MR.Characters.Functions.ResetAll();
+            }, 1500);
+        } else {
+            MR.Characters.CurrentPage = "firstname";
+            MR.Characters.Functions.FadeInLeft('.character-register-new', '5%', 400);
+            MR.Characters.Functions.DisableCharSelector();
+        }
+    } else {
+        MR.Characters.Functions.Notify("fas fa-user-friends", "Karakters", "You have no character selected.", "#e74c3c", 500);
+    }
+});
+
+// Functions
+
+MR.Characters.Functions.Setup = function(characters) {
+    $.each(characters, function(index, char){
+        $('#char-'+char.cid).html("");
+        $('#char-'+char.cid).data("citizenid", char.citizenid);
+        setTimeout(function(){
+            $('#char-'+char.cid).html('<span id="slot-icon"><i class="fas fa-user fa-3x"></i></span><span id="slot-name">'+char.charinfo.firstname+' '+char.charinfo.lastname+'</span><span id="slot-name-description">$'+char.money.bank+' | '+char.job.label+'</span>');
+            $('#char-'+char.cid).data('cData', char)
+            $('#char-'+char.cid).data('cid', char.cid)
+        }, 100)
     });
 }
 
-skill_heads = document.querySelectorAll(".skill_head");
-skill_deets = document.querySelectorAll(".skill_detail");
+MR.Characters.Functions.Refresh = function() {
+    $('.characters-list').html(
+        '<div class="character-list-header"><p>MY CHARACTERS</p></div><div class="character-list-header-select"><p>SELECT A CHARACTER</p></div> <div class="character" id="char-1" data-cid=""> <span id="slot-icon"><i class="fas fa-user fa-3x"></i></span> <span id="slot-name">Empty slot</span></span> <span id="slot-name-description">No data...</span></span> </div> <div class="character" id="char-2" data-cid=""> <span id="slot-icon"><i class="fas fa-user fa-3x"></i></span> <span id="slot-name">Empty slot</span></span> <span id="slot-name-description">No data...</span></span> </div> <div class="character" id="char-3" data-cid=""> <span id="slot-icon"><i class="fas fa-user fa-3x"></i></span> <span id="slot-name">Empty slot</span></span> <span id="slot-name-description">No data...</span></span> </div> <div class="character" id="char-4" data-cid=""> <span id="slot-icon"><i class="fas fa-user fa-3x"></i></span> <span id="slot-name">Empty slot</span></span> <span id="slot-name-description">No data...</span></span> </div>' +
+        '<div class="play-button"><span id="button-icon"><i class="fas fa-check fa-3x"></i></span><div class="play-btn" id="play"><p id="play-text">Confirm</p></div><span id="button-name-description"><p id="play-text-description">Confirm Identity</p></span></div>' +
+        '<div class="delete-button"><span id="button-icon"><i class="fas fa-trash-alt fa-3x"></i></span><div class="delete-btn" id="delete"><p id="delete-text">Delete</p></div><span id="button-name-description">Delete Character</span></div>' +
+        '<div class="disconnect-button"><span id="button-icon"><i class="fas fa-ban fa-3x"></i></span><div class="disconnect-btn" id="disconnect"><p id="disconnect-text">Disconnect</p></div><span id="button-name-description">Disconnect from city</span></div>'); 
+    $(MR.Characters.SelectedChar).removeClass("char-selected");
+    setTimeout(function(){
+        MR.Characters.SelectedChar = null;
+        $.post(`https://${GetParentResourceName()}/SetupCharacters`);
+        MR.Characters.Functions.ResetAll();
+        MR.Characters.Functions.FadeInRight('.characters-list', '5%', 1000);
+    }, 100)
+}
 
-skills = document.getElementById("skills");
-experience = document.getElementById("experience");
-education = document.getElementById("education");
-
-skillBox = document.getElementById("skillBox");
-expBox = document.getElementById("expBox");
-eduBox =  document.getElementById("eduBox");
-
-skills.addEventListener("click",function(){
-    this.classList.toggle("active");
-    deactivateAllExcept(this);
-
-    //initial opacity of all
-    eduBox.style.opacity = "0";
-    skillBox.style.opacity = "0";
-    expBox.style.opacity = "0";
-
-     //styles change for skill box only
-    skillBox.style.position = "relative"; // Show it in the layout
-    skillBox.style.opacity = "1";
-    skillBox.style.transform = "translateX(0)";
-
-    //making other section back to old style
-    expBox.style.transform = "translateX(300px)";
-    eduBox.style.transform = "translateX(300px)";
-
-    expBox.style.position = "absolute";
-    eduBox.style.position = "absolute";
-});
-
-
-experience.addEventListener("click",function(){
-    this.classList.toggle("active");
-    deactivateAllExcept(this);
-    //initial opacity of all
-    eduBox.style.opacity = "0";
-    skillBox.style.opacity = "0";
-    expBox.style.opacity = "0";
-
-     //styles change for exp box only
-    expBox.style.position = "relative"; // Show it in the layout
-    expBox.style.opacity = "1";
-    expBox.style.transform = "translateX(0)";
-
-    //making other section back to old style
-    skillBox.style.transform = "translateX(300px)";
-    eduBox.style.transform = "translateX(300px)";
-    skillBox.style.position = "absolute";
-    eduBox.style.position = "absolute";
-});
-
-education.addEventListener("click",function(){
-    this.classList.toggle("active");
-    deactivateAllExcept(this);
-
-    //initial opacity of all
-    eduBox.style.opacity = "0";
-    skillBox.style.opacity = "0";
-    expBox.style.opacity = "0";
-
-    //styles change for edu box only
-    eduBox.style.position = "relative"; // Show it in the layout
-    eduBox.style.opacity = "1";
-    eduBox.style.transform = "translateX(0)";
-
-    //making other section back to old style
-    expBox.style.transform = "translateX(300px)";
-    skillBox.style.transform = "translateX(300px)";
-    skillBox.style.position = "absolute";
-    expBox.style.position = "absolute";
-});
-
-const sections = document.querySelectorAll('.work3');
-let currentSectionIndex = 0;
-
-function rotateSections() {
-    sections[currentSectionIndex].classList.add('section-transition');
+MR.Characters.Functions.ResetRegister = function() {
+    $(".character-register-new").addClass('shakeAnim');
+    MR.Characters.SelectedPage = 1;
+    $(".char-waiting-spinner").find('p').html('Laden');
+    $(".character-register-new-content").fadeIn(150);
+    $(".firstname").fadeIn(150);
+    MR.Characters.CurrentPage = MR.Characters.Pages[MR.Characters.SelectedPage]['name'];
+    $(".character-list-header-select-reg").find('p').html(MR.Characters.Pages[MR.Characters.SelectedPage]['label']);
+    $("#button-icon-reg").html('<i class="fas fa-arrow-circle-right fa-3x"></i>')
+    $("#next-text").html('Next');
+    $("#next-text-description").html('Continue');
     setTimeout(() => {
-    sections[currentSectionIndex].style.display = 'none';
-    currentSectionIndex = (currentSectionIndex + 1) % sections.length;
-    sections[currentSectionIndex].style.display = 'flex';
-    sections[currentSectionIndex].classList.remove('section-transition');
-    }, 500); 
+        $(".character-register-new").removeClass('shakeAnim');
+    }, 2000);
 }
 
-// Initially, show the first section
-sections[currentSectionIndex].style.display = 'flex';
+MR.Characters.Functions.DisableCharSelector = function() {
+    $(".character").addClass('disabled');
+    $(".delete-button").addClass('disabled');
+    $(".play-button").addClass('disabled');
+    $(".disconnect-button").addClass('disabled');
+}
 
-// Rotate sections every 3 seconds (3000 milliseconds)
-setInterval(rotateSections, 5500);
+MR.Characters.Functions.EnableCharSelector = function() {
+    $(".character").removeClass('disabled');
+    $(".delete-button").removeClass('disabled');
+    $(".play-button").removeClass('disabled');
+    $(".disconnect-button").removeClass('disabled');
+}
 
-//ANIMATED BG
-var w = window.innerWidth,
-    h = window.innerHeight,
-    canvas = document.getElementById('particles'),
-    ctx = canvas.getContext('2d'),
-    rate = 60,
-    arc = 100,
-    time,
-    count,
-    size = 7,
-    speed = 20,
-    parts = new Array,
-    colors = ['red','#f57900','yellow','#ce5c00','#5c3566'];
-var mouse = { x: 0, y: 0 };
+MR.Characters.Functions.ResetValues = function() {
+    $('#first_name').val('');
+    $('#last_name').val('');
+    $('#nationality').val('');
+    $('#birthdate').val('');
+}
 
-canvas.setAttribute('width', w);
-canvas.setAttribute('height', h);
+MR.Characters.Functions.ResetAll = function() {
+    $('.characters-list').hide();
+    $('.characters-list').css("right", "-45vh");
 
-function create() {
-    time = 0;
-    count = 0;
+    $('#first_name').val('')
+    $('#last_name').val('')
+    $('#nationality').val('')
+    $('#birthdate').val('')
+}
 
-    for(var i = 0; i < arc; i++) {
-        parts[i] = {
-            x: Math.ceil(Math.random() * w),
-            y: Math.ceil(Math.random() * h),
-            toX: Math.random() * 5 - 1,
-            toY: Math.random() * 2 - 1,
-            c: colors[Math.floor(Math.random()*colors.length)],
-            size: Math.random() * size
-        }
+MR.Characters.Functions.FadeOutLeft = function(element, percent, time) {
+    if (percent !== undefined) {
+        $(element).css({"display":"block"}).animate({left: percent,}, time, function(){
+            $(element).css({"display":"none"});
+        });
+    } else {
+        $(element).css({"display":"block"}).animate({left: "103.5%",}, time, function(){
+            $(element).css({"display":"none"});
+        });
     }
 }
 
-function particles() {
-    ctx.clearRect(0,0,w,h);
-    canvas.addEventListener('mousemove', MouseMove, false);
-    for(var i = 0; i < arc; i++) {
-        var li = parts[i];
-        var distanceFactor = DistanceBetween( mouse, parts[i] );
-        var distanceFactor = Math.max( Math.min( 15 - ( distanceFactor / 10 ), 10 ), 1 );
-        ctx.beginPath();
-        ctx.arc(li.x,li.y,li.size*distanceFactor,0,Math.PI*2,false);
-        ctx.fillStyle = li.c;
-        ctx.strokeStyle=li.c;
-        if(i%2==0)
-            ctx.stroke();
-        else
-            ctx.fill();
-
-        li.x = li.x + li.toX * (time * 0.05);
-        li.y = li.y + li.toY * (time * 0.05);
-
-        if(li.x > w){
-            li.x = 0; 
-        }
-        if(li.y > h) {
-            li.y = 0; 
-        }
-        if(li.x < 0) {
-            li.x = w; 
-        }
-        if(li.y < 0) {
-            li.y = h; 
-        }
+MR.Characters.Functions.FadeOutRight = function(element, percent, time) {
+    if (percent !== undefined) {
+        $(element).css({"display":"block"}).animate({right: percent,}, time, function(){
+            $(element).css({"display":"none"});
+        });
+    } else {
+        $(element).css({"display":"block"}).animate({right: "103.5%",}, time, function(){
+            $(element).css({"display":"none"});
+        });
     }
-    if(time < speed) {
-        time++;
-    }
-    setTimeout(particles,1000/rate);
 }
 
-function MouseMove(e) {
-    mouse.x = e.layerX;
-    mouse.y = e.layerY;
+MR.Characters.Functions.FadeInRight = function(element, percent, time) {
+    $(element).css({"display":"block"}).animate({right: percent,}, time);
 }
 
-function DistanceBetween(p1,p2) {
-    var dx = p2.x-p1.x;
-    var dy = p2.y-p1.y;
-    return Math.sqrt(dx*dx + dy*dy);
+MR.Characters.Functions.FadeInLeft = function(element, percent, time) {
+    $(element).css({"display":"block"}).animate({left: percent,}, time);
 }
 
-create();
-particles();
+MR.Characters.Functions.Notify = function (icon, title, text, color, timeout) {
+  $(".notification-icon").css({ color: color });
+  $(".notification-title").css({ color: color });
+  $(".notification-icon").html('<i class="'+icon+'"></i>');
+  $(".notification-title").html(title);
+  $(".notification-text").html(text);
+  setTimeout(function () {
+    $(".notification-container").css({display: "block"}).animate({
+        top: "10%",
+    }, 200);
+  }, timeout != null ? timeout : 1500);
 
+  setTimeout(function () {
+    $(".notification-container").animate({
+        top: "-10%",
+    }, 200).css({ display: "block" });
+  }, timeout + 5000);
+};
 
+// Listener
 
-
-//now in this code, i have created a nav tag which is displayed in flex row when width is high, when width is small, the hamburger menu (fafabars) will be displayed. but when i click on it, it opens as required but it does'nt come on top of the exisiting content and instead the exisiting content goes down. pls resolve and give. read the code thoroughly and give the solution. if the whole code is too long, give only the necessary code that has to be changed.
+$(document).ready(function (){
+    window.addEventListener('message', function (event) {
+        let data = event.data;
+        if (data.action == "ui") {
+            if (data.toggle) {
+                $('.container').show();
+                MR.Characters.Functions.DisableCharSelector();
+                MR.Characters.Functions.ResetAll();
+                setTimeout(function(){
+                    $.post(`https://${GetParentResourceName()}/SetupCharacters`);
+                    MR.Characters.Functions.FadeInRight('.characters-list', '5%', 1000);
+                    MR.Characters.Functions.EnableCharSelector();
+                }, 500);
+            } else {
+                $('.container').fadeOut(250);
+                MR.Characters.Functions.ResetAll();
+            }
+        } else if (data.action == "SetupCharacters") {
+            MR.Characters.Functions.Setup(event.data.characters);
+        } else if (data.action == "DisableCharSelector") {
+            MR.Characters.Functions.DisableCharSelector();
+        } else if (data.action == "EnableCharSelector") {
+            MR.Characters.Functions.EnableCharSelector();
+        }
+    });
+});

@@ -1,235 +1,200 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <title>Divya's Portfolio</title>
+  <meta charset="utf-8">
+  <meta http-equiv="x-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Personamy-cv.pdfl Portfolio Website</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
-<body onload=main_sliding()>
-    <section class="hero" id="hero">
-        <canvas id="particles"></canvas>
-        <div class="header">
-            <h1><span style="color: rgb(255, 0, 38);" id="letter" class="letter">D</span>ivya's Portfolio</h1>
-            <div class="menu-icon" id="menu-icon">
-                <i class="fas fa-bars"></i>
-            </div>
-            <nav id="nav">
-                <ul>
-                    <div class="close" id="close"><i class="fas fa-times fa-2x"></i></div>
-                    <li class="top_list"><a href="index.html">Home</a></li>
-                    <li class="top_list"><a href="#about">About</a></li>
-                    <li class="top_list"><a href="#my_services">Services</a></li>
-                    <li class="top_list"><a href="#main_works">My works</a></li>
-                    <li class="top_list"><a href="#contactme">Contact</a></li>
-                </ul>
-            </nav>
-        </div>
-        <div class="main" id="main">
-            <p>Full Stack Developer</p>
-            <h1>Hi, I'm <span style="color: rgb(255, 0, 38);"><span class="letter">D</span>ivyashree</span></h1>
-            <h1>from Bangarapet</h1>
-        </div>
-    </section>
-    <section class="about" id="about">
-        <img src="img/akka21.jpg" alt="Myimage" class="myimage" id="myimage">
-        <div class="about-info">
-            <h1>About Me</h1>
-            <p class="about_desc">Hey there,<br/>I'm Sanjana S Acharya, a dedicated and enthusiastic learner. Currently pursuing my BTech in Computer Science and Engineering at Presidency University, Bangalore, I thrive on challenges and continuously seek to expand my knowledge. As a self-taught programmer, I am passionate about exploring new technologies and mastering Data Structures and Algorithms using Java for Competitive programming. Moreover, I actively build websites using React.js, aiming to share my programming skills and collaborate with the vibrant developer community in GitHub. Let's learn and grow together!</p>
-            <div class="three-elements">
-                <p class="element" id="skills">Skills</p>
-                <p class="element" id="experience">Experience</p>
-                <p class="element" id="education">Education</p>
-            </div>
-            <div class="element_info" id="skillBox">
-                <div class="info">
-                    <p class="skill_head">MERN STACK</p>
-                    <p class="skill_detail">(MongoDB, Express.js, React.js Node.js)</p>
-                </div>
-                <div class="info">
-                    <p class="skill_head">Java & Python</p>
-                    <p class="skill_detail">Data Structures and Algorithms</p>
-                </div>
-                <div class="info">
-                    <p class="skill_head">MySQL & NoSQL(MongoDB)</p>
-                    <p class="skill_detail">For Database Management</p>
-                </div>
-                <div class="info" id="last_box">
-                    <p class="skill_head">JDBC and Python-MySQL Connectivity</p>
-                    <p class="skill_detail">For seamless connection between backend and database</p>
-                </div>
-            </div>
-            <div class="element_info" id="expBox">
-                <div class="info">
-                    <p class="skill_head">Java Developer Intern</p>
-                    <p class="skill_detail">Digital Bhem<br/>Created a desktop-level movie ticket booking system</p>
-                </div>
-                <div class="info">
-                    <p class="skill_head">Web Developer Intern</p>
-                    <p class="skill_detail">CodeClause<br/>Created beautiful websites using JavaScript</p>
-                </div>
-                <div class="info">
-                    <p class="skill_head">Software Developer Intern</p>
-                    <p class="skill_detail">Datacom<br/>Fixing bugs in Javascript codebase</p>
-                </div>
-                
-            </div>
-            <div class="element_info" id="eduBox">
-                <div class="info">
-                    <p class="skill_head">BTech - Computer Science and Engineering(2021-2025)</p>
-                    <p class="skill_detail">CGPA - 8.85<br/>Presidency University, Bangalore</p>
-                </div>
-                <div class="info">
-                    <p class="skill_head">Grade XII</p>
-                    <p class="skill_detail">Grade - 87%<br/>Saraswathi Vidyalaya,Chennai</p>
-                </div>
-            </div>
+<body>
+<div id="header">
+  <div class="container">
+    <nav>
+      <img src="././img/akka21.jpg" class="logo">
+      <ul id="sidemenu">
+        <li><a href="#header">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#portfolio">Portfolio</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <button id="open-menu-btn"><i class="fa-solid fa-bars"></i></button>
+      </ul>
+      <button id="close-menu-btn"><i class="fa-solid fa-xmark"></i></button>
+    </nav>
+    <div class="header-text">
+      <p>STUDENT</p>
+      <h1>HI, I'm <span>Divyashree</span><br>From Bangarapet</h1>
+    </div>
+  </div>
+</div>
 
-        </div>
-    </section>
-    <section class="my_services" id="my_services">
-        <h1>My Services</h1>
-        <div class="services">
-            <div class="service">
-                <div><i class="fas fa-code fa-2x" style="color: blue;"></i></div>
-                <h2>Full Stack Web Development</h2>
-                <p>Creating beautiful websites using MERN Stack</p>
-                
-            </div>
-            <div class="service">
-                <div><i class="fas fa-brain fa-2x" style="color: yellow;"></i></div>
-                <h2>Placement Help for Problem Solving</h2>
-                <p> Can help you solve challenging questions </p>
-               
-            </div>
-            <div class="service">
-                <div><i class="fab fa-android fa-2x" style="color: green;"></i></div>
-                <h2>Desktop-Level App Development</h2>
-                <p> Can create desktop-level application using Java as well as Python </p>
-               
-            </div>
-           
-        </div>
-    </section>
-    <section class="my_works" id="main_works">
-        <h1>My Main Projects</h1>
+<!-- ----------about---------- -->
+
+<div id="about">
+  <div class="container">
+    <div class="row">
+      <div class="about-col-1">
+        <img src="./2.png">
+      </div>
+      <div class="about-col-2">
+        <h1 class="sub-title">About me</h1>
         <br>
-        <div class="main-proj">
-                <div class="work m" style="background-image: url('img/bookastaypic.jpg'); height: 170px; object-fit: cover;">
-                    <h2>BookAStay - Hotel Booking App</h2>
-                    <p class="work_details">Hotel Booking Application where users can surf hotels in any city and can experience a hassfle-free booking and Hotel Host can view all the bookings with analytics.</p>
-                    <a href="https://bookastayapp.netlify.app/" target="_blank"><p class="lm"><br><br><br><br><br>View App <img src="img/resumeShareicon.png" alt="" width="16px" height="16px"></p></a>
-                </div>
-
-                <div class="work m" style="background-image: url('img/resumeapppic.avif'); height: 170px; object-fit: cover;">
-                    <h2 style="color: black;margin-left: 60px;">Resume Builder App</h2>
-                    <p class="work_details">A react based Resume Builder App which takes user's information and creates resume with the chosen template.</p>
-                    <a href="https://resume-builder-appp.netlify.app/" target="_blank"><p class="lm"><br><br><br><br><br>View App <img src="img/resumeShareicon.png" alt="" width="16px" height="16px"></p></a>
-                </div>
-
-                <div class="work m" style="background-image: url('img/sudokuapppic.jpg'); height: 170px; object-fit: cover;">
-                    <h2 style="color: black">Sudoku Solver</h2>
-                    <p class="work_details">A sudoku game where users can either PLAY SUDOKU OR PROVIDE THE QUESTION AND GET THE SOLUTION.</p>
-                    <a href="https://github.com/Sanjana1304/Sudoku-Solver" target="_blank"><p class="lm" style="color: rgb(93, 84, 84);"><br><br><br><br><br><br>View Project <img src="img/resumeShareicon.png" alt="" width="16px" height="16px"></p></a>
-                </div>
+        <p>Mercy Flor. I'm a 20-year-old student who loves anime and is inspired by the creativity and dedication of others. I was born on March 1, 2004, in Polanco, Zamboanga del Norte, and I'm currently in my second year of a BSCS program.</p>
+        <div class="tab-titles">
+          <p class="tab-links active-link" onclick="opentab('skills')">Skills</p>
+          <p class="tab-links" onclick="opentab('Hobbies')">Hobbies</p>
+          <p class="tab-links" onclick="opentab('education')">Education</p>
         </div>
-    </section>
-    <section class="my_works" id="my_works">
-        <h1>Other Projects</h1>
-        
-        <div class="works">
-            <div class="work3" id="first3">
-                
-                <div class="work" style="background-image: url('img/blackground.gif'); height: 170px; object-fit: cover;">
-                    <h2>Movie Finder App</h2>
-                    <p class="work_details">A web application using React.js where users can find movies with its details using API fetching </p>
-                    <a href="https://github.com/Sanjana1304/Movie-Finder-App" target="_blank"><p class="lm"><br><br><br><br><br><br>View Project <img src="img/resumeShareicon.png" alt="" width="16px" height="16px"></p></a>
-                </div>
-                
-
-                <div class="work" style="background-image: url('img/amazon_app_pic.jpg'); height: 170px; object-fit: cover;">
-                    <h2>Amazon Clone</h2>
-                    <p class="work_details">A simple Amazon clone using html,css and js</p>
-                    <a href="https://github.com/Sanjana1304/AmazonClone" target="_blank"><p class="lm"><br><br><br><br><br>View Project <img src="img/resumeShareicon.png" alt="" width="16px" height="16px"></p></a>
-                </div>
-
-                <div class="work" style="background-image: url('img/kfc_app_pic.webp'); height: 170px; object-fit: cover;">
-                    <h2>KFC Landing Page</h2>
-                    <p class="work_details">A responsive web design for KFC-Clone</p>
-                    <a href="https://github.com/Sanjana1304/Basic-Front-End-Projects/tree/main/KFC_LandingPage" target="_blank"><p class="lm"><br><br><br><br><br><br>View Project <img src="img/resumeShareicon.png" alt="" width="16px" height="16px"></p></a>
-                </div>
-                
-            </div>
-
-            <div class="work3" id="second3">
-                <div class="work" style="background-image: url('img/twitter_app_pic.jpg'); height: 170px; object-fit: cover;">
-                    <h2 style="color: black;">Twitter-like App</h2>
-                    <p class="work_details">A react based twitter-like web application where users can see, post, search and delete tweets and also explore trending tweets.</p>
-                    <a href="https://github.com/Sanjana1304/Twitter-app" target="_blank"><p class="lm"><br><br><br><br><br>View Project <img src="img/resumeShareicon.png" alt="" width="16px" height="16px"></p></a>
-                </div>
-
-                <div class="work" style="background-image: url('img/netflix_app_pic.jpg'); height: 170px; object-fit: cover;">
-                    <h2>Netflix Homepage clone</h2>
-                    <p class="work_details"> A responsive Netflix homepage clone using HTML,CSS and JavaScript.</p>
-                    <a href="https://github.com/Sanjana1304/Netflix-Homepage-Clone" target="_blank"><p class="lm"><br><br><br><br><br>View Project <img src="img/resumeShareicon.png" alt="" width="16px" height="16px"></p></a>
-                </div>
-
-                <div class="work" style="background-image: url('img/movie_bg.jpg'); height: 170px; object-fit: cover;">
-                    <h2>Movie Ticket Booking System!</h2>
-                    <p class="work_details">Application where users can surf movies and theatres in any city and can experience a hassfle-free booking.</p>
-                    <a href="https://github.com/Sanjana1304/Movie-Ticket-Booking-System" target="_blank"><p class="lm"><br><br><br><br><br>View Project <img src="img/resumeShareicon.png" alt="" width="16px" height="16px"></p></a>
-                </div>
-                
-                
-            
-            </div>
-            <div class="work3" id="third3">
-                <div class="work" style="background-image: url('img/recipe_pic.jpg'); height: 170px; object-fit: cover;">
-                    <h2>Recipe Finder and Meal Planner</h2>
-                    <p class="work_details">A react based recipe finder app which helps users to browse for recipes based on ingredients, dishes and save them for later use. The app also helps users to get a curated meal plan based on their target calories and diet type.</p>
-                    <a href="https://github.com/Sanjana1304/Recipe-finder-and-Meal-Planner" target="_blank"><p class="lm"><br><br><br><br><br>View Project <img src="img/resumeShareicon.png" alt="" width="16px" height="16px"></p></a>
-                </div>
-
-                <div class="work" style="background-image: url('img/currency_app_pic.jpg'); height: 170px; object-fit: cover;">
-                    <h2>Finance Tracker</h2>
-                    <p class="work_details">A MERN Stack based Finance Tracker app which helps users to track their finance. Used clerk for user authentication</p>
-                    <a href="https://finance-tracker-appp.netlify.app/" target="_blank"><p class="lm"><br><br><br><br><br>View App <img src="img/resumeShareicon.png" alt="" width="16px" height="16px"></p></a>
-                </div>
-
-                <div class="work" style="background-image: url('img/idea_pic.jpeg'); height: 170px; object-fit: cover;">
-                    <h2>IDEA!</h2>
-                    <p class="work_details">Introducing Intelligent Digital Educational Assist: a Python app with Tkinter GUI where users interact with modules, increasing engagement. Features include activity tracking, history, a library for saving lectures, and a recommendation system based on past views.</p>
-                    <a href="https://github.com/Sanjana1304/IDEA" target="_blank"><p class="lm"><br><br><br><br><br>View Project <img src="img/resumeShareicon.png" alt="" width="16px" height="16px"></p></a>
-                </div>
-                
-            </div>
-        
+        <div class="tab-contents active-tab" id="skills">
+          <ul>
+            <li><span>DRAWING</span><br>Designing anime interfaces</li>
+            <li><span>PAINTING</span><br>Painting and Crafting</li>
+          </ul>
         </div>
-        
-
-    </section>
-    <section class="contactme" id="contactme">
-        <div class="contact_info">
-            <h1>Contact Me</h1>
-            <a href="mailTo:sensanjana072@gmail.com" class="mymail"><i class="fas fa-envelope" style="color: red;"></i>  sensanjana072@gmail.com</a>
-            <p><i class="fas fa-phone"  style="color: red;"></i> +91 1234567890</p>
-            <div class="social_media">
-                <a href=""><i class="fab fa-instagram"></i></a>
-                <a href="https://www.linkedin.com/in/sanjana-acharya-a84b03231" target="_blank"><i class="fab fa-linkedin-in"></i></a>
-                <a href="https://github.com/Sanjana1304" target="_blank"><i class="fab fa-github"></i></a>
-            </div>
-<!--             <a href="https://drive.google.com/file/d/1MQNhJerG5qQ3TccG8YtQoz5FzpNEE4rm/view?usp=share_link" target="_blank" ><div class="my_resume">Check My Resume  <img src="img/resumeShareicon.png" width="16px" height="16px"></div></a> -->
+        <div class="tab-contents" id="Hobbies">
+          <ul>
+            <li><span>Watching Anime</span><br>Your Name, One Piece, Naruto, Attack on Titan</li>
+          </ul>
         </div>
-        <div class="contact_form">
-            <input type="text" class="input_name" id="input_name" placeholder="Your Name">
-            <input type="email" class="input_mail" id="input_mail" placeholder="Your Email">
-            <textarea name="input_msg" class="input_msg" id="input_msg" cols="30" rows="10" placeholder="Your Message..."></textarea>
-            <div class="submitBox"><button class="submit" id="submit">Submit</button></div>
+        <div class="tab-contents" id="education">
+          <ul>
+            <li><span>2015-2016</span><br>Letapan Elementary School</li>
+            <li><span>2021-2022</span><br>Silawe Natioanl High School</li>
+            <li><span>2023-2024</span><br>2nd Year Bachelor of Science in Computer Science<br>Jose Rizal Memorial State University Katipunan Campus</li>
+          </ul>
         </div>
-    </section>
+      </div>
+    </div>
+  </div>
+</div>
 
+<!-- ----------portfolio---------- -->
+
+<div id="portfolio">
+  <div class="container">
+    <h1 class="sub-title">My Favorite Anime</h1>
+    <div class="work-list">
+      <div class="work">
+        <a href="https://www.imdb.com/title/tt5311514/?ref_=ext_shr_lnk">
+          <img src="./your name.jpg">
+        </a>
+        <div class="layer"></div>
+      </div>
+      <div class="work">
+        <a href="https://www.imdb.com/title/tt0388629/?ref_=ext_shr_lnk">
+          <img src="./onepiece.jpg">
+        </a>
+        <div class="layer"></div>
+      </div>
+      <div class="work">
+        <a href="https://www.imdb.com/title/tt12343534/?ref_=ext_shr_lnk">
+          <img src="./jujutsu.jpeg">
+        </a>
+        <div class="layer"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ----------services---------- -->
+
+<div id="services">
+  <div class="container">
+    <h1 class="sub-title">My Services</h1>
+    <div class="services-list">
+      <div>
+        <i class="fas fa-pencil-alt"></i>
+        <h2>CHARACTER DESIGN</h2>
+        <p>I enjoy creating anime characters through drawing, where I can bring unique personalities to life and explore endless creative possibilities.</p>
+      </div>
+      <div>
+        <i class="fas fa-paint-brush"></i>
+        <h2>PAINTING</h2>
+        <p>I love painting because it allows me to express emotions, capture moments, and transform visions into vibrant artwork.</p>
+      </div>
+      <div>
+        <i class="fas fa-app-store"></i>
+        <h2>FAN ART</h2>
+        <p>I offer bespoke fan art commissions, where I bring beloved characters and worlds to life through my unique artistic style, catering to the passions and preferences of fellow fans.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ----------contact---------- -->
+
+<div id="contact">
+  <div class="container">
+    <div class="row">
+      <div class="contact-left">
+        <h1 class="sub-title">Contact Me</h1>
+        <p><i class="fas fa-envelope"></i>flormercy246@gmail.com</p>
+        <p><i class="fas fa-phone-square-alt"></i>09065488204</p>
+        <div class="social-icons">
+          <a href="https://www.facebook.com/miamercy.flor/"><i class="fab fa-facebook"></i></a>
+          <a href="https://www.instagram.com/mercycuerda/?igsh=MWVweWhnemxvbXo3cw%3D%3D&fbclid=IwAR2gu7soVIdMYifW5tBLXfs7KQIaaErGQwQjORhQxi5POVdN2aO_WFX0Nvc"><i class="fab fa-instagram"></i></a>
+          <a href="https://www.tiktok.com/@mhee_01?_r=1&_d=dm8i2i9gic8gej&sec_uid=MS4wLjABAAAArfuVkAy7RpZINFp8FrBdRTo9bO63d7PmYaAJDjMRvV56r_e6htZLXwtT655PbIKr&share_author_id=7023579271794050049&sharer_language=en&source=h5_t&u_code=dm8i291il2kfhf&timestamp=1711115739&user_id=7042966911253316609&sec_user_id=MS4wLjABAAAAXo0gyeU_IKhlT-c0GFArlbA8dzQwEnp-BO2yv17nhjWoHTfA_h605GSPk79zh05C&utm_source=copy&utm_campaign=client_share&utm_medium=android&share_iid=7348344722962614022&share_link_id=631f164f-11b7-4db9-ad0d-c2d5f818b1b9&share_app_id=1180&ugbiz_name=ACCOUNT&ug_btm=b7360%2Cb5836&social_share_type=5&enable_checksum=1&fbclid=IwAR1321hcAStvHj-L9lbXyRB_kCNqpFFK54p_jdCzHlo1oCnYDlKYyWCVDaE"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="contact-right">
+        <script>
+          var tablinks = document.getElementsByClassName("tab-links");
+          var tabcontents = document.getElementsByClassName("tab-contents");
+
+          function opentab(tabname) {
+            for (var tablink of tablinks) {
+              tablink.classList.remove("active-link");
+            }
+            for (var tabcontent of tabcontents) {
+              tabcontent.classList.remove("active-tab")
+            }
+            event.currentTarget.classList.add("active-link");
+            document.getElementById(tabname).classList.add("active-tab");
+          }
+        </script>
+        <script>
+          const scriptURL = 'https://script.google.com/macros/s/AKfycbzA1AB9LTz7ScdFPt8AJMsfYKozZpEftlxvLME_ZUJezGkutNLyE98sOA2H03deaC4/exec'
+          const form = document.forms['submit-to-google-sheet']
+          const msg = document.getElementById("msg")
+          form.addEventListener('submit', e => {
+            e.preventDefault()
+            fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+              .then(response => {
+                msg.innerHTML = "Message sent successfully"
+                setTimeout(function () {
+                  msg.innerHTML = ""
+                }, 5000)
+                form.reset()
+              })
+              .catch(error => console.error('Error!', error.message))
+          })
+        </script>
+        <script>
+          // Show/hide nav menu
+          const menu = document.querySelector(".nav__menu");
+          const menuBtn = document.querySelector("#open-menu-btn");
+          const closeBtn = document.querySelector("#close-menu-btn");
+
+          menuBtn.addEventListener('click', () => {
+            menu.style.display = "flex";
+            closeBtn.style.display = "inline-block";
+            menuBtn.style.display = "none";
+          })
+
+          // Close nav menu
+          const closeNav = () => {
+            menu.style.display = "none";
+            closeBtn.style.display = "none";
+            menuBtn.style.display = "inline-block";
+          }
+
+          closeBtn.addEventListener('click', closeNav)
+        </script>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
-<script src="script.js"></script>
 </html>
